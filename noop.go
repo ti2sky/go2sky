@@ -24,6 +24,7 @@ import (
 )
 
 type NoopSpan struct {
+	tracer *Tracer
 }
 
 func (*NoopSpan) SetOperationName(string) {
@@ -60,4 +61,8 @@ func (*NoopSpan) IsEntry() bool {
 
 func (*NoopSpan) IsExit() bool {
 	return false
+}
+
+func (s *NoopSpan) Tracer() *Tracer {
+	return s.tracer
 }

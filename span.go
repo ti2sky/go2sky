@@ -52,6 +52,7 @@ type Span interface {
 	End()
 	IsEntry() bool
 	IsExit() bool
+	Tracer() *Tracer
 }
 
 func newLocalSpan(t *Tracer) *defaultSpan {
@@ -84,6 +85,10 @@ func (ds *defaultSpan) SetOperationName(name string) {
 
 func (ds *defaultSpan) GetOperationName() string {
 	return ds.OperationName
+}
+
+func (ds *defaultSpan) Tracer() *Tracer {
+	return ds.tracer
 }
 
 func (ds *defaultSpan) SetPeer(peer string) {

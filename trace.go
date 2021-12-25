@@ -168,7 +168,9 @@ func (t *Tracer) createNoop(ctx context.Context) (s Span, nCtx context.Context) 
 		return
 	}
 	if t.initFlag == 0 {
-		s = &NoopSpan{}
+		s = &NoopSpan{
+			tracer: t,
+		}
 		nCtx = context.WithValue(ctx, ctxKeyInstance, s)
 		return
 	}
@@ -196,4 +198,13 @@ func TraceID(ctx context.Context) string {
 		return span.context().TraceID
 	}
 	return NoopTraceID
+}
+
+func SpanFromContext(ctx context.Context) *Span {
+	activeSpan := ctx.Value(ctxKeyInstance)
+	if activeSpan == nil {
+		return nil
+	}
+	span := activeSpan.(Span)
+	return &span
 }
